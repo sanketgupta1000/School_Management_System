@@ -21,22 +21,25 @@
  {
 	  person_id varchar [ref: > Person.Person_ID]
     mobile_no number
+    Indexes{
+      (person_id, mobile_no) [pk]
+    }
 }
 
  TABLE student{
-	  student_id varchar 
+	  student_id varchar [pk]
     person_id varchar [ref: - Person.Person_ID]
 }
 
  TABLE employee{
-	  employee_id varchar 
+	  employee_id varchar [pk]
     person_id varchar [ref: - Person.Person_ID]
     salary number
     job varchar
 }
 
  TABLE teacher{
-	  teacher_id varchar 
+	  teacher_id varchar [pk]
     employee_id varchar [ref: - employee.employee_id]
 }
 
@@ -44,10 +47,13 @@
 	  room_no number
     building_no number
     capacity number
+    Indexes{
+      (room_no, building_no) [pk]
+    }
 }
 
  TABLE standard{
-	  standard_no number 
+	  standard_no number [pk]
     teacher_id varchar [ref: - teacher.teacher_id]
     room_no number
     building_no number
@@ -58,6 +64,9 @@ Ref: standard.(room_no, building_no) - classroom.(room_no, building_no)
     subject_name varchar
     standard_no number [ref: > standard.standard_no]
     book varchar
+    Indexes{
+      (subject_name, standard_no) [pk]
+    }
 }
 
  table enrollment
@@ -66,6 +75,9 @@ Ref: standard.(room_no, building_no) - classroom.(room_no, building_no)
     standard_no number [ref: > standard.standard_no]
     student_id varchar [ref: - student.student_id]
     enrolled_date date
+    Indexes{
+      (roll_no, standard_no, student_id) [pk]
+    }
 }
 
  table lecture
@@ -77,13 +89,16 @@ Ref: standard.(room_no, building_no) - classroom.(room_no, building_no)
     day varchar
     start_time varchar
     end_time varchar
+    Indexes{
+      (standard_no, subject_name, lecture_no) [pk]
+    }
 }
 
 Ref: lecture.(subject_name, standard_no) > subject.(subject_name, standard_no)
 
  table working_day
 {
-    day_no number
+    day_no number [pk]
     date_ date unique
 }
 
@@ -92,4 +107,7 @@ Ref: lecture.(subject_name, standard_no) > subject.(subject_name, standard_no)
     day_no number [ref: > working_day.day_no]
     person_id varchar [ref: > Person.Person_ID]
     status varchar
+    Indexes{
+      (day_no, person_id) [pk]
+    }
 }
