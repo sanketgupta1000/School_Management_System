@@ -1,0 +1,95 @@
+// Use DBML to define your database structure
+// Docs: https://dbml.dbdiagram.io/docs
+
+ TABLE Person
+{
+	  Person_ID varchar [primary key]
+    F_Name varchar
+    M_Name varchar
+    L_Name varchar
+    House_No varchar
+    society_name varchar
+    street_name varchar
+    locality varchar
+    pincode number
+    gender varchar
+    is_student number
+    dob date 
+}
+
+ TABLE person_mobile
+ {
+	  person_id varchar [ref: > Person.Person_ID]
+    mobile_no number
+}
+
+ TABLE student{
+	  student_id varchar 
+    person_id varchar [ref: - Person.Person_ID]
+}
+
+ TABLE employee{
+	  employee_id varchar 
+    person_id varchar [ref: - Person.Person_ID]
+    salary number
+    job varchar
+}
+
+ TABLE teacher{
+	  teacher_id varchar 
+    employee_id varchar [ref: - employee.employee_id]
+}
+
+ TABLE classroom{
+	  room_no number
+    building_no number
+    capacity number
+}
+
+ TABLE standard{
+	  standard_no number 
+    teacher_id varchar [ref: - teacher.teacher_id]
+    room_no number
+    building_no number
+}
+Ref: standard.(room_no, building_no) - classroom.(room_no, building_no)
+ table subject
+{
+    subject_name varchar
+    standard_no number [ref: > standard.standard_no]
+    book varchar
+}
+
+ table enrollment
+{
+    roll_no number
+    standard_no number [ref: > standard.standard_no]
+    student_id varchar [ref: - student.student_id]
+    enrolled_date date
+}
+
+ table lecture
+{
+    lecture_no number
+    subject_name varchar
+    standard_no number
+    teacher_id varchar [ref: > teacher.teacher_id]
+    day varchar
+    start_time varchar
+    end_time varchar
+}
+
+Ref: lecture.(subject_name, standard_no) > subject.(subject_name, standard_no)
+
+ table working_day
+{
+    day_no number
+    date_ date unique
+}
+
+ table attendance
+{
+    day_no number [ref: > working_day.day_no]
+    person_id varchar [ref: > Person.Person_ID]
+    status varchar
+}
