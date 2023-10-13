@@ -24,7 +24,7 @@ CREATE TABLE person_mobile(
 CREATE TABLE student(
 	student_id varchar(10) PRIMARY KEY,
     person_id varchar(10),
-    foreign key(student_id) REFERENCES person(person_id)
+    foreign key(person_id) REFERENCES person(person_id)
 );
 
 CREATE TABLE employee(
