@@ -66,3 +66,38 @@ begin
         insert into person_mobile values(p_id, mno);
     end loop;
 end;
+
+--to randomly add attendance
+create or replace procedure randomize_attendance
+is
+    cursor day_
+    is
+        select day_no from working_day;
+    cursor p
+    is
+        select person_id from person;
+    d_no number;
+    p_id varchar(10);
+    
+    type asso_status_arr is table of varchar(20) index by PLS_INTEGER;
+    status asso_status_arr;
+begin
+
+    status(0) := 'Present';
+    status(1) := 'Present';
+    status(2) := 'Present';
+    status(3) := 'Absent';
+    open day_;
+    loop
+        fetch day_ into d_no;
+        exit when day_%notfound;
+        open p;
+        loop
+            fetch p into p_id;
+            exit when p%notfound;
+            insert into attendance values(d_no, p_id, status(trunc(dbms_random.value(0, 4))));
+        end loop;
+        close p;
+    end loop;
+    close day_;
+end;
