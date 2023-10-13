@@ -1,4 +1,6 @@
---only for demonstration purposes. This will take data from person table, and put into employee table with random job and salary
+--only for demonstration purposes
+
+--This will take data from person table, and put into employee table with random job and salary
 create or replace procedure randomize_employee
 is
     --cursor to iterate on person table where emp's data is stored
@@ -44,4 +46,23 @@ begin
 		--now inserting into employee
 		insert into employee values(e_id, p_id, e_salary, e_job);
 	end loop;
+end;
+
+--to randomly add mobile numbers
+create or replace procedure randomize_mobile
+is
+    cursor person_
+    is
+        select person_id from person;
+        
+    p_id varchar(10);
+    mno number;
+begin
+    open person_;
+    loop
+        fetch person_ into p_id;
+        exit when person_%notfound;
+        mno := trunc(dbms_random.value(6666666666, 9999999999));
+        insert into person_mobile values(p_id, mno);
+    end loop;
 end;
